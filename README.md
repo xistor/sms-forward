@@ -9,6 +9,8 @@ sms forwarding with Air700e
 
 修改 sms_forward_config.h中的邮箱配置
 
+发送邮箱只测试过163邮箱，其他邮箱可能有所不同。
+
 ## 编译
 
 需要CSDK
