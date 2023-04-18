@@ -98,12 +98,13 @@ static void forward_sms_task(void *param)
 			LUAT_DEBUG_PRINT("refNum: [%d] maxNum :[%d] seqNum [%d]", data->refNum, data->maxNum, data->seqNum);
 
 			rcv_seg++;
-			uni_str_to_hex(data->sms_buffer, uni_hex, data->sms_length);
-			LUAT_DEBUG_PRINT("uni_str_to_hex");
 
-
-			uni_hex_to_utf8(uni_hex, &msg_seg[data->seqNum > 0 ? data->seqNum- 1 : 0],  data->sms_length / 4);
-
+			if(data->dcs_info.alpha_bet == 2) {
+				uni_str_to_hex(data->sms_buffer, uni_hex, data->sms_length);
+				uni_hex_to_utf8(uni_hex, &msg_seg[data->seqNum > 0 ? data->seqNum - 1 : 0],  data->sms_length / 4);
+			} else {
+				memcpy(&msg_seg[data->seqNum > 0 ? data->seqNum - 1 : 0], data->sms_buffer, data->sms_length + 1);
+			}
 
 			// 长短信最后一包 或 非长短信
 			if(data->maxNum <= rcv_seg) {
